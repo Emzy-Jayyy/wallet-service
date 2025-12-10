@@ -6,8 +6,8 @@ import {
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import * as crypto from 'crypto';
-import { PaystackInitializeResponse } from 'src/utils/types/paystack-initialize.interface';
-import { PaystackVerifyResponse } from 'src/utils/types/paystack-verify.interface';
+import { PaystackInitializeResponse } from '../../../utils/types/paystack-initialize.interface';
+import { PaystackVerifyResponse } from '../../../utils/types/paystack-verify.interface';
 
 @Injectable()
 export class PaystackService {

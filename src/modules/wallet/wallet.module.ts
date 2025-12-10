@@ -5,9 +5,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { WalletController } from './wallet.controller';
 import { WalletService } from './wallet.service';
 import { PaystackService } from './services/payment.service';
-import { Wallet } from 'src/entities/wallet.entity';
-import { Transaction } from 'src/entities/transaction.entity';
-import { User } from 'src/entities/user.entity';
+import { Wallet } from '../../entities/wallet.entity';
+import { Transaction } from '../../entities/transaction.entity';
+import { User } from '../../entities/user.entity';
 import { ApiKeysModule } from '../api-keys/api-keys.module';
 
 @Module({

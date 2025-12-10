@@ -10,7 +10,7 @@ import {
 import { ApiKeysService } from './api-keys.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
-import { User } from 'src/entities/user.entity';
+import { User } from '../../entities/user.entity';
 import { CreateApiKeyDto } from './dto/create-api-key.dto';
 import { RolloverApiKeyDto } from './dto/rollover-api-key.dto';
 

@@ -10,7 +10,7 @@ import { AuthGuard } from '@nestjs/passport';
 import type { Request, Response } from 'express';
 import { AuthService } from './auth.service';
 import { ConfigService } from '@nestjs/config';
-import type { GoogleUser } from 'src/utils/types/google-user.interface';
+import type { GoogleUser } from '../../utils/types/google-user.interface';
 import { CurrentUser } from './decorators/current-user.decorator';
 
 @Controller('auth')

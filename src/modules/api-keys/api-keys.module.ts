@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApiKeysController } from './api-keys.controller';
 import { ApiKeysService } from './api-keys.service';
-import { ApiKey } from 'src/entities/api-key.entity';
-import { User } from 'src/entities/user.entity';
+import { ApiKey } from '../../entities/api-key.entity';
+import { User } from '../../entities/user.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([ApiKey, User])],

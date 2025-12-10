@@ -6,13 +6,13 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DataSource } from 'typeorm';
-import { Wallet } from 'src/entities/wallet.entity';
+import { Wallet } from '../../entities/wallet.entity';
 import {
   Transaction,
   TransactionType,
   TransactionStatus,
-} from 'src/entities/transaction.entity';
-import { User } from 'src/entities/user.entity';
+} from '../../entities/transaction.entity';
+import { User } from '../../entities/user.entity';
 import { PaystackService } from './services/payment.service';
 import { v4 as uuidv4 } from 'uuid';
 

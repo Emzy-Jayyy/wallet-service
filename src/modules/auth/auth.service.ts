@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from 'src/entities/user.entity';
-import { Wallet } from 'src/entities/wallet.entity';
-import { JwtPayload } from 'src/utils/types/auth-user.type';
-import { GoogleUser } from 'src/utils/types/google-user.interface';
+import { User } from '../../entities/user.entity';
+import { Wallet } from '../../entities/wallet.entity';
+import { JwtPayload } from '../../utils/types/auth-user.type';
+import { GoogleUser } from '../../utils/types/google-user.interface';
 
 @Injectable()
 export class AuthService {

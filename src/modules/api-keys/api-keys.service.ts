@@ -6,8 +6,8 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, MoreThan } from 'typeorm';
-import { ApiKey } from 'src/entities/api-key.entity';
-import { User } from 'src/entities/user.entity';
+import { ApiKey } from '../../entities/api-key.entity';
+import { User } from '../../entities/user.entity';
 import * as crypto from 'crypto';
 
 @Injectable()

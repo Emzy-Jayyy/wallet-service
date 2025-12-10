@@ -16,7 +16,7 @@ import { CombinedAuthGuard } from '../auth/guards/combined-auth.guard';
 import { PermissionsGuard } from '../auth/guards/permissions.guard';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { RequirePermission } from '../auth/decorators/require-permission.decorator';
-import { User } from 'src/entities/user.entity';
+import { User } from '../../entities/user.entity';
 import { DepositDto } from './dto/deposit.dto';
 import { TransferDto } from './dto/transfer.dto';
 import { PaystackService } from './services/payment.service';
