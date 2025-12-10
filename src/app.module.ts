@@ -8,6 +8,7 @@ import { ApiKeysModule } from './modules/api-keys/api-keys.module';
 import { WalletModule } from './modules/wallet/wallet.module';
 import { TransactionsModule } from './modules/transactions/transactions.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { WalletService } from './modules/wallet/wallet.service';
 
 @Module({
   imports: [
@@ -26,6 +27,6 @@ import { AuthModule } from './modules/auth/auth.module';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, WalletService],
 })
 export class AppModule {}

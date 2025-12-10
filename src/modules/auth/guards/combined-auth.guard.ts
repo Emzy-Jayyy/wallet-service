@@ -1,83 +1,98 @@
-// import {
-//   Injectable,
-//   CanActivate,
-//   ExecutionContext,
-//   UnauthorizedException,
-// } from '@nestjs/common';
-// import { JwtService } from '@nestjs/jwt';
-// import { ConfigService } from '@nestjs/config';
-// import { InjectRepository } from '@nestjs/typeorm';
-// import { Repository } from 'typeorm';
-// import { User } from 'src/entities/user.entity';
-// import { ApiKeysService } from '../../api-keys/api-keys.service';
+import {
+  Injectable,
+  CanActivate,
+  ExecutionContext,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from 'src/entities/user.entity';
+import { ApiKeysService } from '../../api-keys/api-keys.service';
+import { Request } from 'express';
+import { JwtPayload } from 'src/utils/types/auth-user.type';
+import { ApiKey } from 'src/entities/api-key.entity';
 
-// @Injectable()
-// export class CombinedAuthGuard implements CanActivate {
-//   constructor(
-//     private jwtService: JwtService,
-//     private configService: ConfigService,
-//     private apiKeysService: ApiKeysService,
-//     @InjectRepository(User)
-//     private userRepository: Repository<User>,
-//   ) {}
+type AuthenticatedRequest = Request & {
+  user?: User;
+  apiKey?: Partial<ApiKey>;
+  authType?: 'api-key' | 'jwt';
+};
 
-//   async canActivate(context: ExecutionContext): Promise<boolean> {
-//     const request = context.switchToHttp().getRequest();
+@Injectable()
+export class CombinedAuthGuard implements CanActivate {
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
+    private readonly apiKeysService: ApiKeysService,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {}
 
-//     // Check for API key first
-//     const apiKey = request.headers['x-api-key'];
-//     if (apiKey) {
-//       return this.validateApiKey(request, apiKey);
-//     }
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
 
-//     // Check for JWT token
-//     const authHeader = request.headers.authorization;
-//     if (authHeader && authHeader.startsWith('Bearer ')) {
-//       return this.validateJwt(request, authHeader);
-//     }
+    // API key
+    const apiKeyHeader = request.headers['x-api-key'];
+    const apiKey = Array.isArray(apiKeyHeader) ? apiKeyHeader[0] : apiKeyHeader;
 
-//     throw new UnauthorizedException('No valid authentication provided');
-//   }
+    if (apiKey) {
+      return this.validateApiKey(request, apiKey);
+    }
 
-//   private async validateApiKey(request: any, apiKey: string): Promise<boolean> {
-//     const validApiKey = await this.apiKeysService.validateApiKey(apiKey);
+    // JWT
+    const authHeader = request.headers.authorization;
+    if (authHeader?.startsWith('Bearer ')) {
+      return this.validateJwt(request, authHeader);
+    }
 
-//     if (!validApiKey) {
-//       throw new UnauthorizedException('Invalid API key');
-//     }
+    throw new UnauthorizedException('No valid authentication provided');
+  }
 
-//     request.apiKey = validApiKey;
-//     request.user = validApiKey.user;
-//     request.authType = 'api-key';
+  private async validateApiKey(
+    request: AuthenticatedRequest,
+    apiKey: string,
+  ): Promise<boolean> {
+    const validApiKey = await this.apiKeysService.validateApiKey(apiKey);
 
-//     return true;
-//   }
+    if (!validApiKey) {
+      throw new UnauthorizedException('Invalid API key');
+    }
 
-//   private async validateJwt(
-//     request: any,
-//     authHeader: string,
-//   ): Promise<boolean> {
-//     try {
-//       const token = authHeader.substring(7);
-//       const payload = this.jwtService.verify(token, {
-//         secret: this.configService.get('JWT_SECRET'),
-//       });
+    request.apiKey = validApiKey;
+    request.user = validApiKey.user;
+    request.authType = 'api-key';
 
-//       const user = await this.userRepository.findOne({
-//         where: { id: payload.sub },
-//         relations: ['wallet'],
-//       });
+    return true;
+  }
 
-//       if (!user) {
-//         throw new UnauthorizedException('User not found');
-//       }
+  private async validateJwt(
+    request: AuthenticatedRequest,
+    authHeader: string,
+  ): Promise<boolean> {
+    try {
+      const token = authHeader.substring(7);
 
-//       request.user = user;
-//       request.authType = 'jwt';
+      const payload = this.jwtService.verify<JwtPayload>(token, {
+        secret: this.configService.getOrThrow<string>('JWT_SECRET'),
+      });
 
-//       return true;
-//     } catch (error) {
-//       throw new UnauthorizedException('Invalid token');
-//     }
-//   }
-// }
+      const user = await this.userRepository.findOne({
+        where: { id: payload.userId }, // or payload.userId depending on your interface
+        relations: ['wallet'],
+      });
+
+      if (!user) {
+        throw new UnauthorizedException('User not found');
+      }
+
+      request.user = user;
+      request.authType = 'jwt';
+
+      return true;
+    } catch {
+      throw new UnauthorizedException('Invalid token');
+    }
+  }
+}
