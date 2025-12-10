@@ -13,5 +13,6 @@ export const getDatabaseConfig = (
     database: configService.get<string>('DB_NAME'),
     entities: [__dirname + '/../**/*.entity{.ts,.js}'],
     synchronize: configService.get<string>('NODE_ENV') !== 'production',
+    logging: process.env.NODE_ENV !== 'production',
   };
 };

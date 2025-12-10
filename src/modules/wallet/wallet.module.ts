@@ -24,5 +24,6 @@ import { ApiKeysModule } from '../api-keys/api-keys.module';
   ],
   controllers: [WalletController],
   providers: [WalletService, PaystackService],
+  exports: [WalletService],
 })
 export class WalletModule {}
