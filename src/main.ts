@@ -74,11 +74,6 @@ async function bootstrap() {
       `,
     )
     .setVersion('1.0')
-    .setContact(
-      'Your Name',
-      'https://your-website.com',
-      'your-email@example.com',
-    )
     .setLicense('MIT', 'https://opensource.org/licenses/MIT')
     .addTag('Authentication', 'Google OAuth and JWT token endpoints')
     .addTag('API Keys', 'API key management for service-to-service access')
