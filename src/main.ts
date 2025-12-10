@@ -32,6 +32,10 @@ async function bootstrap() {
     credentials: true,
   });
 
+  console.log('DB_HOST:', process.env.DB_HOST);
+  console.log('DB_PORT:', process.env.DB_PORT);
+  console.log('DB_USER:', process.env.DB_USER);
+
   // Swagger Configuration
   const config = new DocumentBuilder()
     .setTitle('Wallet Service API')
@@ -122,14 +126,6 @@ async function bootstrap() {
       showRequestDuration: true,
     },
   });
-
-  // app.use(
-  //   bodyParser.json({
-  //     verify: (req: Request, _res, buf: Buffer) => {
-  //       req.rawBody = buf;
-  //     },
-  //   }),
-  // );
 
   await app.listen(process.env.PORT ?? 3000);
 }
