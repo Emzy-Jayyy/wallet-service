@@ -40,7 +40,7 @@ export class ApiKeyListItemDto {
 
 export class ApiKeyResponseDto {
   @ApiProperty({
-    example: 'sk_live_a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6',
+    example: 'sk_live_000000000000000000000',
     description: 'Your generated API key - save this securely!',
   })
   api_key: string;
