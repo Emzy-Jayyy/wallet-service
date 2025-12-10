@@ -101,7 +101,7 @@ async function bootstrap() {
       'API-KEY',
     )
     .addServer('http://localhost:3000', 'Development Server')
-    .addServer('https://your-production-url.com', 'Production Server')
+    .addServer('https://wallet-service-emzy-jayyy9714-e2ln6xq7.leapcell.dev', 'Production Server')
     .build();
 
   const document: OpenAPIObject = SwaggerModule.createDocument(app, config);
