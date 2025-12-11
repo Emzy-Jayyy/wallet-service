@@ -97,7 +97,6 @@ export class WalletController {
   }
 
   @Post('paystack/webhook')
-  @ApiExcludeEndpoint()
   async handlePaystackWebhook(
     @Req() req: RawBodyRequest<Request>,
     @Headers('x-paystack-signature') signature: string,
